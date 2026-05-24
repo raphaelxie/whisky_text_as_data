@@ -1,0 +1,55 @@
+Whiskyfun Scottish Malts Index Matching Report
+============================================================
+1. Distillery/index pages scraped (inventory): 152
+2. Index review entries scraped: 8803
+3. Index entries matched to corpus: 4658
+4. Match counts by match_method:
+   - exact_normalized_name_score: 1
+   - exact_normalized_name_score_snippet: 2
+   - exact_url: 4648
+   - fuzzy_low: 7
+   - unmatched: 4145
+5. Unmatched index entries: 4145
+6. Corpus rows with Scottish Malt index match: 2744
+7. Matched rows where name_mentions_index_distillery == FALSE: 300
+8. Top examples where index_distillery not in whisky_name_raw:
+   - Bruichladdich :: Br2 (49.3%, Specialty Drinks, Elements of Islay, 2011)
+   - St-Magdalene :: St Magdalene 26 yo 1982/2009 (55%, Chieftain's, butt, cask #2219, 348 bottles)
+   - Glenury Royal :: Glenury 33 yo 1968/2002 (48.8%, Douglas Laing Platinum, 165 bottles)
+   - Speyside Dist :: Speyside 16 yo 1994/2011 (46%, Mo Or Collection, bourbon hogshead, cask #34, 385 bottles)
+   - An Cnoc/Knockdhu :: An Cnoc 16 yo (46%, OB, +/- 2011)
+   - Allt-A-Bhainne :: Allt A'Bhainne 12yo 1992/2005 (57.6%, Cadenhead's Authentic Collection, bourbon barrel, 240 bottles)
+   - Octomore :: Port Charlotte 2001/2011 (66.3%, Malts of Scotland, white Rioja hogshead, cask #11017, 345 bottles)
+   - Octomore :: Port Charlotte 10 yo 2001/2012 (64.4%, OB for The Geordie Laddies, fresh bourbon barrel, cask #857, 243 bottles)
+   - Royal Lochnagar :: Lochnagar 12 yo (70° proof, OB, 75.7cl, 1970s)
+   - Ladyburn (1 :: Rare Ayrshire 36 yo 1974/2010 (46%, Mo Or Collection, #4, bourbon barrel, 261 bottles)
+   - Octomore :: Port Charlotte 2002/2012 (63.1%, Malts of Scotland, sherry hogshead, cask #MoS 12034, 265 bottles)
+   -  :: Lagavulin 12 yo (43%, OB, White Horse Distillers, UK, +/-1979)
+   - Bunnahabhain :: Isle of Islay 20 yo 1990/2011 (52.8%, Exclusive Malts, cask #251211, 298 bottles)
+   -  :: Lagavulin 16 yo (43%, OB, +/- 2012)
+   - An Cnoc/Knockdhu :: An Cnoc 'Peter Arkle 2nd Edition' (46%, OB, 2012)
+   - Tomintoul :: Old Ballantruan 10 yo (50%, OB, 2012)
+   - Isle of Jura :: Jura Whisky (75° proof UK, OB, bottled +/-1979)
+   - Octomore :: Port Charlotte 2001/2012 (63.3%, Malts of Scotland, sherry hogshead, cask #MoS 12039, 302 bottles)
+   - Octomore :: Port Charlotte 10 yo (46%, OB, 2012)
+   - Glenmorangie :: Westport 7 yo 2005/2012 (48.6%, Sansibar, refill sherry wood, 228 bottles)
+   - Ladyburn (1 :: Rare Ayrshire 38 yo 1974/2012 (50.8%, Signatory for Waldhaus am See St. Moritz, cask #2604, 124 bottles)
+   - Hazelburn :: Hazelgrove 14 yo 1998/2012 (46%, The Maltman, sherry, 331 bottles)
+   - Octomore :: Port Charlotte ‘The Peat Project’ (46%, OB, 2012)
+   - Old Pulteney :: Pulteney 22 yo 1990/2012 (55.2%, Cadenhead, Authentic Collection, bourbon barrel, 204 bottles)
+   -  :: Lagavulin 12 yo 'Special Release 2012' (56.1%, OB)
+   - Royal Lochnagar :: Lochnagar 29 yo 1973/2002 (50%, Douglas Laing, Old Malt Cask, 276 bottles)
+   - Glenesk :: Glen Esk 28 yo 1983/2012 (54.6%, Blackadder, Raw Cask, refill sherry butt, cask #4929, 248 bottles)
+   - Glen Garioch :: Secret Stills 'Highland' 1993/2008 (45%, Gordon & MacPhail, Van Wees, first fill sherry butt, cask #779, 860 bottles)
+   - An Cnoc/Knockdhu :: An Cnoc 22 yo (46%, OB, 2013)
+   - Loch Lomond :: Old Rhosdhu 1967/1999 (40%, OB, Dumpy, plastic screw cap)
+9. Duplicate / multi-page membership examples:
+   - e09e90558a6ef0f2a146f11421f9a31fdc310eedb7f38a2acd15d45b7bd319a7 (3 named hits)
+   - 6dde467b5887870a1e63e5fdf7c4468ef4015d790f84b13cccd734ddff6c8020 (6 named hits)
+   - b178352ea2ba94848f70d0bf073af816e6935012f1be9a8061edba005aaff4ea (5 named hits)
+   - fda6a20b2401384c77dfb27ac554c8143f36ed2eea193640c74b02bf0c382587 (2 named hits)
+   - d67bf416e0bfe986951adf2f10252f82c23f89981bc1482bc1e7b47e6d4de07c (3 named hits)
+   - dd15ab5e5713ce4b0b6ac93227df9f98b4e87f56f9b414f66eccc559836a7291 (2 named hits)
+   - 1e4f795f42eeb1662cb187ab86d03d77ed82f777f30b3a30e1fd3cd982c4bff5 (2 named hits)
+   - 9674fe078a2c22cb54aa7b51a6bbd20f378626f50f1864db6129f6f6b65bd5a2 (2 named hits)
+10. Scraping errors / unusual pages:

@@ -1,0 +1,13 @@
+Variable,Mean,Median,SD,Min,Max,N
+Score,86.23,87.0,5.36,4.0,100.0,11149
+Review Length (words),171.15,163.0,50.46,11.0,465.0,11149
+Fruit/Aromatics (per 1k),17.75,15.38,13.6,0.0,103.09,11149
+Peat/Smoke/Coastal (per 1k),10.3,4.67,15.07,0.0,126.05,11149
+Sherry/Rancio/Oxidative (per 1k),9.37,5.26,12.93,0.0,95.89,11149
+Oak/Cask/Wood (per 1k),7.3,5.05,9.83,0.0,100.78,11149
+Texture/Body (per 1k),9.65,7.3,9.68,0.0,81.08,11149
+Mineral/Earth/Farmy (per 1k),12.4,8.85,12.68,0.0,100.0,11149
+Flaws/Off-notes (per 1k),3.21,0.0,6.26,0.0,77.67,11149
+Finish/Complexity/Balance (per 1k),3.21,0.0,5.09,0.0,50.85,11149
+Explicit Evaluation (per 1k),10.34,8.33,9.18,0.0,97.56,11149
+VADER Compound,0.86,0.96,0.32,-0.99,1.0,11149
