@@ -1,0 +1,6 @@
+Model,Adj_R2,N,Delta_R2_vs_Baseline
+M0: Baseline (length + year FE),0.103,11149,0.0
+M1: VADER Sentiment,0.161,11149,0.05800000000000001
+M2: Full Dictionary (9 categories),0.273,11149,0.17000000000000004
+M3: Dictionary minus Eval (8 categories),0.263,11149,0.16000000000000003
+"M4: TF-IDF / Ridge (5,000 features)",0.5809,11149,0.4779
