@@ -11,7 +11,7 @@ Usage (from project root):
       --matched pipeline/whiskyfun_scottish_malts_matched_reviews.csv \\
       --index-pages pipeline/whiskyfun_scottish_malts_index_pages.csv \\
       --out data/whiskyfun_analytical_dataset.csv \\
-      --readme README.md
+      --readme data/DATASET.md
 """
 
 from __future__ import annotations
@@ -45,6 +45,50 @@ AUX_TYPES: Final[frozenset[str]] = frozenset(
 )
 
 YEAR_MIN, YEAR_MAX = 2012, 2025
+SCORE_VALUE = r"(?:100|[1-9]?\d)(?:\s*(?:[-–/]|or)\s*(?:100|[1-9]?\d))?\+?(?:\s*/\s*100)?"
+HIGH_SCORE_VALUE = r"(?:100|[6-9]\d)(?:\s*(?:[-–/]|or)\s*(?:100|[6-9]\d))?\+?(?:\s*/\s*100)?"
+SCORE_TOKEN = rf"\b{SCORE_VALUE}\b(?!\s*(?:%|°|yo\b|years?\b|bottles?\b))"
+HIGH_SCORE_TOKEN = rf"\b{HIGH_SCORE_VALUE}\b(?!\s*(?:%|°|yo\b|years?\b|bottles?\b|€|£))"
+LABELED_SCORE_TOKEN = rf"\b{SCORE_VALUE}\b\s*%?(?!\s*(?:yo\b|years?\b|bottles?\b))"
+LABELED_HIGH_SCORE_TOKEN = rf"\b{HIGH_SCORE_VALUE}\b\s*%?(?!\s*(?:yo\b|years?\b|bottles?\b|€|£))"
+CONTEXTUAL_SCORE_PATTERNS = {
+    "score_label_numeric": re.compile(
+        rf"\b(?:scores?|scored?|ratings?|rated?)\b[^.!?\n]{{0,45}}?{LABELED_SCORE_TOKEN}",
+        re.IGNORECASE,
+    ),
+    "numeric_score_label": re.compile(
+        rf"{SCORE_TOKEN}[^.!?\n]{{0,45}}?\b(?:scores?|ratings?|points?|pointers?)\b",
+        re.IGNORECASE,
+    ),
+    "personal_score_action": re.compile(
+        rf"\b(?:I\s+(?:had|have)\s+it\s+at|worth|fetch(?:ed|es)?|hit(?:s|ting)?|"
+        rf"(?:I(?:'ll| will)|we(?:'ll| will))\s+(?:say|go\s+for)|go(?:es|ing)?\s+(?:above|over|to))"
+        rf"\s*(?:more\s+than\s+|north\s+of\s+|around\s+|approx(?:imately)?\s+|a\s+|the\s+|"
+        rf"measly\s+|solid\s+)*{HIGH_SCORE_TOKEN}",
+        re.IGNORECASE,
+    ),
+    "personal_percent_score": re.compile(
+        rf"\b(?:I\s+(?:had|have)\s+it\s+at|worth|fetch(?:ed|es)?|"
+        rf"(?:I(?:'ll| will)|we(?:'ll| will))\s+(?:say|go\s+for))"
+        rf"\s*(?:more\s+than\s+|north\s+of\s+|around\s+|approx(?:imately)?\s+|a\s+|the\s+|"
+        rf"measly\s+|solid\s+)*{LABELED_HIGH_SCORE_TOKEN}",
+        re.IGNORECASE,
+    ),
+    "personal_score_sequence": re.compile(
+        rf"\bI\s+(?:had|have)\s+it\s+at\b[^.!?\n]{{0,70}}?{LABELED_HIGH_SCORE_TOKEN}",
+        re.IGNORECASE,
+    ),
+    "numeric_in_tasting_book": re.compile(
+        rf"{HIGH_SCORE_TOKEN}[^.!?\n]{{0,30}}?\b(?:in|for)\s+my\s+(?:little\s+|wee\s+|tasting\s+)?"
+        r"(?:book|system)\b",
+        re.IGNORECASE,
+    ),
+    "score_threshold": re.compile(
+        rf"\b(?:approach(?:ing)?|over|above|under)\s+(?:the\s+)?{HIGH_SCORE_TOKEN}"
+        r"(?:\s*[-–]?\s*(?:mark|hurdle)|\+)?",
+        re.IGNORECASE,
+    ),
+}
 
 OUTPUT_FIELDS: Final[list[str]] = [
     "dedupe_hash",
@@ -142,16 +186,38 @@ def match_distillery_by_name(match_text: str, distilleries: list[str]) -> str | 
 
 
 def strip_score_leakage(s: str) -> str:
-    """Remove score-related tails and tokens from review text (anti-leakage)."""
+    """Remove numerical score disclosures while retaining nonnumeric evaluation prose."""
     t = s
     t = SGP_POINTS_TAIL.sub("", t)
-    # SGP code without full points line
-    t = re.sub(r"SGP\s*:?\s*\d+\s*[-–]\s*\d{1,3}\s*points?", "", t, flags=re.IGNORECASE)
+    # Full and malformed SGP score fields.
+    t = re.sub(r"SGP\s*:?\s*\d*\s*[-–]\s*\d{0,3}\s*points?", "", t, flags=re.IGNORECASE)
     t = re.sub(r"SGP\s*:?\s*\d+", "", t, flags=re.IGNORECASE)
-    t = re.sub(r"\bWF\s*\d+\b", "", t, flags=re.IGNORECASE)
     t = re.sub(r"\bWF\s*\d+\s*points\b", "", t, flags=re.IGNORECASE)
-    t = re.sub(r"\d{1,3}\s*points", "", t, flags=re.IGNORECASE)
-    t = re.sub(r"[-–]\s*\d{1,3}\s*points", "", t, flags=re.IGNORECASE)
+    t = re.sub(r"\bWF\s*\d+\b", "", t, flags=re.IGNORECASE)
+    # Narrative disclosures such as "93 point material" or "score of 94 out of 100".
+    t = re.sub(
+        r"\b(?:score|rating)\s*(?:is|was|of|:|at|around)?\s*"
+        r"\d{1,3}(?:\s*(?:/|out\s+of)\s*100)?\b",
+        "",
+        t,
+        flags=re.IGNORECASE,
+    )
+    t = re.sub(
+        r"\b(?:around\s+|about\s+|an?\s+|mid[-\s]?|high[-\s]?|low[-\s]?)?"
+        r"\d{1,3}(?:\s*[-–]\s*\d{1,3})?\s*(?:[-–]\s*)?point(?:s|er)?\b",
+        "",
+        t,
+        flags=re.IGNORECASE,
+    )
+    # Redact values from looser score talk while retaining the surrounding discussion.
+    for pattern in CONTEXTUAL_SCORE_PATTERNS.values():
+        previous = None
+        while previous != t:
+            previous = t
+            t = pattern.sub(
+                lambda match: re.sub(LABELED_SCORE_TOKEN, "", match.group(0), flags=re.IGNORECASE),
+                t,
+            )
     return normalize_ws(t)
 
 
@@ -359,7 +425,7 @@ def build_rows(
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=OUTPUT_FIELDS, extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=OUTPUT_FIELDS, extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         for r in rows:
             w.writerow(r)
@@ -369,8 +435,8 @@ def write_readme(path: Path, stats: BuildStats, n_out: int, n_distilleries: int)
     lines = [
         "# Whiskyfun analytical dataset",
         "",
-        "This document describes how **`data/whiskyfun_analytical_dataset.csv`** was built for the CSSS594 project "
-        "*How Expert Taste Becomes Text* (Whiskyfun Scottish single malt reviews, 2012–2025).",
+        "This document describes how **`data/whiskyfun_analytical_dataset.csv`** was built for the project "
+        "*Making Expert Taste Computable* (Whiskyfun Scottish malt reviews, 2012-2025).",
         "",
         "## Data sources",
         "",
@@ -485,7 +551,7 @@ def write_readme(path: Path, stats: BuildStats, n_out: int, n_distilleries: int)
         "  --matched pipeline/whiskyfun_scottish_malts_matched_reviews.csv \\",
         "  --index-pages pipeline/whiskyfun_scottish_malts_index_pages.csv \\",
         "  --out data/whiskyfun_analytical_dataset.csv \\",
-        "  --readme README.md",
+        "  --readme data/DATASET.md",
         "```",
         "",
     ]
@@ -509,7 +575,7 @@ def main() -> int:
         type=Path,
         default=_ROOT / "data" / "whiskyfun_analytical_dataset.csv",
     )
-    ap.add_argument("--readme", type=Path, default=_ROOT / "README.md")
+    ap.add_argument("--readme", type=Path, default=_ROOT / "data" / "DATASET.md")
     args = ap.parse_args()
 
     if not args.matched.is_file():

@@ -1,4 +1,0 @@
-Test,EffectSize_d,p_value_one_sided,N_permutations,n_X,n_Y,n_A,n_B,notes
-WEAT 1: High vs Low × Quality/Defect,1.5811,0.0003,10000,7,7,6,4,"X missing: ['long_finish'], Y missing: ['short_finish']"
-WEAT 2: Flaws vs Neutral × Defect/Quality (with sulphur),1.114,0.0233,10000,6,6,5,5,"Target X: ['rubber', 'sulphur', 'cardboard', 'soap', 'metallic', 'feinty']"
-WEAT 2: Flaws vs Neutral × Defect/Quality (without sulphur),1.1041,0.0364,10000,5,6,5,5,"Target X: ['rubber', 'cardboard', 'soap', 'metallic', 'feinty']; Δd from full: +0.0099"

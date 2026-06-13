@@ -1,0 +1,42 @@
+term,group,score,test
+complex,X,0.15909502,WEAT 1: High vs Low × Quality/Defect
+waxy,X,0.13519055,WEAT 1: High vs Low × Quality/Defect
+tropical_fruit,X,0.13019553,WEAT 1: High vs Low × Quality/Defect
+balanced,X,0.1298464,WEAT 1: High vs Low × Quality/Defect
+elegant,X,0.23907967,WEAT 1: High vs Low × Quality/Defect
+rancio,X,0.16621438,WEAT 1: High vs Low × Quality/Defect
+mineral,X,0.16492927,WEAT 1: High vs Low × Quality/Defect
+thin,Y,-0.088492066,WEAT 1: High vs Low × Quality/Defect
+bitter,Y,0.057389155,WEAT 1: High vs Low × Quality/Defect
+rubbery,Y,-0.111515075,WEAT 1: High vs Low × Quality/Defect
+cardboard,Y,-0.24620524,WEAT 1: High vs Low × Quality/Defect
+weak,Y,-0.22459356,WEAT 1: High vs Low × Quality/Defect
+dull,Y,-0.12622833,WEAT 1: High vs Low × Quality/Defect
+simple,Y,-0.021818444,WEAT 1: High vs Low × Quality/Defect
+rubber,X,0.063074216,WEAT 2: Flaws vs Neutral × Defect/Quality
+sulphur,X,0.09114559,WEAT 2: Flaws vs Neutral × Defect/Quality
+cardboard,X,0.2345523,WEAT 2: Flaws vs Neutral × Defect/Quality
+soap,X,0.10310188,WEAT 2: Flaws vs Neutral × Defect/Quality
+metallic,X,0.03317745,WEAT 2: Flaws vs Neutral × Defect/Quality
+feinty,X,0.27823228,WEAT 2: Flaws vs Neutral × Defect/Quality
+solvent,X,-0.0049568564,WEAT 2: Flaws vs Neutral × Defect/Quality
+barley,Y,0.03901998,WEAT 2: Flaws vs Neutral × Defect/Quality
+malt,Y,0.041931212,WEAT 2: Flaws vs Neutral × Defect/Quality
+cereal,Y,-0.032410607,WEAT 2: Flaws vs Neutral × Defect/Quality
+apple,Y,0.052680656,WEAT 2: Flaws vs Neutral × Defect/Quality
+vanilla,Y,0.07824676,WEAT 2: Flaws vs Neutral × Defect/Quality
+honey,Y,-0.07276115,WEAT 2: Flaws vs Neutral × Defect/Quality
+old_school,X,0.17865986,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+old_style,X,0.12790763,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+classic,X,0.1422235,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+traditional,X,-0.053499497,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+genuine,X,0.050408855,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+waxy,X,0.13519055,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+honest,X,-0.07862592,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+doctored,Y,-0.13854015,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+industrial,Y,-0.13461109,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+bland,Y,-0.13144144,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+hollow,Y,-0.18838564,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+botoxed,Y,-0.21718654,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+wood_driven,Y,-0.2292114,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect
+cask_driven,Y,-0.092978,WEAT 3 (Suppl.): Old School vs Modern × Quality/Defect

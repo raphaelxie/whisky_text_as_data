@@ -1,130 +1,160 @@
-# Making Taste Legible
+# Making Expert Taste Computable
 
-**Symbolic boundaries and expert valuation in Whiskyfun Scottish malt reviews (2012–2025)**
+This repository contains a reproducible computational-sociology study of
+expert valuation in Whiskyfun Scottish malt reviews from 2012-2025. It uses
+theory-guided text measurement and distributional semantics to study how
+specialized tasting discourse makes sensory qualities comparable and
+evaluable. The publication analysis uses scripted, tested computations;
+notebooks present or preserve the analytical history.
 
-Text-as-data project for CSSS594. Expert whisky reviews translate private sensory experience into public cultural value through evaluative language organized around symbolic boundaries (natural/authentic vs. artificial/industrial, complexity/balance vs. simplicity/disorder). This repository contains the data pipeline, analytical dataset, analysis notebooks, and reproducible results.
+## Publication Goal
 
-## Research questions
+The primary target is *Poetics: Journal of Empirical Research on Culture,
+the Media and the Arts* (submit by August 1, 2026). Backup venues in order:
+*Big Data & Society*, *Socius*, ICWSM 2027. The planned article is not a
+score-prediction paper and not a general account of whisky consumers. It
+treats expert whisky reviewing as a bounded case in the sociology of
+cultural valuation — examining how a specialized evaluative community
+constructs comparability and legitimacy through tasting discourse.
 
-1. **Domain-specific measurement** — Does expert whisky evaluation encode quality through domain-specific sensory vocabulary beyond generic sentiment?
-2. **Symbolic boundaries** — Are valued and devalued descriptors organized along cultural symbolic boundaries?
-3. **Semantic structure** — Can these boundaries be recovered as interpretable dimensions in the semantic space of tasting language?
+**Working title:** *Making Expert Taste Computable: Symbolic Boundaries and
+the Discursive Production of Value in Whisky Reviews*
 
-See `theoretical_framework.md` for the full sociological framing.
+The Poetics contribution has three parts:
 
-## Repository structure
+1. A substantive finding in the sociology of cultural valuation: defect
+   vocabulary and a Natural/Artificial semantic axis identify a stable
+   symbolic boundary in this expert corpus, consistent with cultural-field
+   theories of legitimate versus illegitimate production.
+2. An empirical demonstration that domain-specific evaluative categories
+   derived from expert tasting discourse carry evaluative signal beyond
+   generic sentiment, supporting theories of specialized cultural competence
+   and field-specific valuation logics.
+3. A methodological contribution for empirical cultural sociology: a
+   reproducible workflow for constructing interpretable, theory-grounded
+   measurement instruments from expert cultural discourse.
 
-```
-.
-├── data/                  # Analytical dataset and analysis outputs
-├── figures/               # EDA and results figures (PDF + PNG)
-├── notebooks/             # Analysis notebooks (w0–w4)
-├── pipeline/              # Scraping, cleaning, and dataset-building scripts
-├── whiskyfun_build_analytical_dataset.py
-├── test_whiskyfun_build_analytical_dataset.py
-├── theoretical_framework.md
-├── requirements.txt
-└── README.md
-```
+See `paper/REFRAMING_MEMO_POETICS.md` for the active Poetics-primary
+submission blueprint and summer 2026 revision plan,
+`theoretical_framework.md` for the sociology-to-measurement argument, and
+`llm-council/runs/venue-selection-2026/final-plan.md` for the full venue
+strategy analysis.
 
-| Path | Description |
-|------|-------------|
-| `data/whiskyfun_analytical_dataset.csv` | Main analytical table (~11k Scottish malt reviews) |
-| `data/whiskyfun_dictionary_v1.json` | Domain dictionary of sensory/evaluative terms |
-| `data/w2_*`, `data/w3_*`, `data/w4_*` | Regression, embedding, and WEAT result tables |
-| `notebooks/w0_*` | Phrase tokenization and bigram preprocessing |
-| `notebooks/w1_*` | Dictionary construction, feature extraction, EDA |
-| `notebooks/w2_*` | Regression models and known-groups validation |
-| `notebooks/w3_*` | Word2Vec dimensions and WEAT tests |
-| `notebooks/w4_*` | Final models, tables, and figures |
-| `pipeline/` | Archive crawl, Scottish Malts index matching, raw/intermediate CSVs |
+## Corrected Corpus
 
-## Setup
+The analytical dataset contains 11,149 reviews from 146 assigned distilleries.
+Name matching supplies 8,492 reviews (76.2%), while direct index matching
+supplies 2,657 reviews (23.8%). The score mean is 86.226 and the median is 87.
+The generated corpus audit and score-leakage checks are in
+`data/qa_corpus_summary.json` and `data/qa_score_markers.csv`.
+
+Processed review text remains included for replication with attribution to
+[Whiskyfun](https://www.whiskyfun.com/). This repository does not assert that
+redistribution permission has been obtained; see
+`DATA_USE_AND_ATTRIBUTION.md`.
+
+## Version 2 Measurement Status
+
+Version 1 is retained as historical evidence, but it is superseded for primary
+interpretation because it mixed fruit, floral, herbal/tea, and spice terms and
+did not preserve a complete approval trail. Version 2 uses eleven primary
+constructs: it separates fruit, floral, and spice, omits herbal/tea as too
+minor for this study's theory, replaces the former sherry/rancio construct with
+`sherry_influence`, whose berry and dried-fruit candidates require explicit
+adjudication, excludes or documents context-dependent terms, and
+is frozen as the primary instrument (`data/whiskyfun_dictionary_v2.json`).
+Superseded Version 1 tables and notebooks live under `_local/archive/v1/`
+(local only, not tracked in git).
+
+## Canonical Workflow
+
+Run from the repository root:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python -m nltk.downloader punkt punkt_tab
+python whiskyfun_build_analytical_dataset.py
+python -m analysis.qa
+# Produces concordances and frequencies only; review this worksheet manually.
+python -m analysis.dictionary candidate
+# Run after completing every decision, rationale, and reviewer status cell.
+python -m analysis.dictionary freeze
+python -m analysis.models
+python -m analysis.embeddings
+python -m analysis.assemble
+python -m pytest -q -p no:cacheprovider \
+  test_whiskyfun_build_analytical_dataset.py \
+  pipeline/test_whiskyfun_parse_utils.py \
+  test_analysis.py
 ```
 
-## Reproducing the analytical dataset
+The candidate command refuses to overwrite an existing adjudication worksheet;
+use the generated `data/dictionary_v2_adjudication.csv` in this repository for
+ongoing review. Its `--overwrite` flag is only for deliberately restarting
+that review.
 
-```bash
-python whiskyfun_build_analytical_dataset.py \
-  --matched pipeline/whiskyfun_scottish_malts_matched_reviews.csv \
-  --index-pages pipeline/whiskyfun_scottish_malts_index_pages.csv \
-  --out data/whiskyfun_analytical_dataset.csv
-```
+To add terms before review, edit candidate definitions in
+`analysis/dictionary.py`, regenerate the CSV, and rerun the review notebook.
+Do not edit `notebooks/v2_dictionary_review.ipynb` to alter category contents;
+it is a presentation artifact that reads the generated worksheet.
 
-Run tests:
+The three final analysis commands deliberately fail until a completed approval
+worksheet has been frozen to `data/whiskyfun_dictionary_v2.json`. Once frozen,
+they write primary artifacts under `data/v2/` and `figures/v2/`. The embedding
+command performs the prespecified deterministic 30-run stability analysis. For
+a quick development-only run, use `python -m analysis.embeddings
+--skip-stability`.
 
-```bash
-python -m pytest test_whiskyfun_build_analytical_dataset.py -q
-```
+## Outputs
 
-## Analysis workflow
+- `paper/final_paper.md`: assembled working manuscript from V2 results (`python -m analysis.assemble`); theory-first restructuring for Poetics in progress.
+- `paper/REFRAMING_MEMO_POETICS.md`: active Poetics-primary submission blueprint and summer 2026 revision plan.
+- `paper/REFRAMING_MEMO_JCSS.md`: superseded JCSS manuscript blueprint; retained for development provenance.
+- `paper/references.bib`: single bibliography source.
+- `paper/source_log.md`: citation verification and use log.
+- `data/DATASET.md`: generated corpus-construction memo.
+- `data/whiskyfun_analytical_dataset.csv`, `data/whiskyfun_tokenized.parquet`: shared corpus inputs.
+- `data/dictionary_v2_adjudication.csv`: term-level review worksheet with concordances and decisions.
+- `data/dictionary_v2_ambiguous_terms.csv`: excluded-primary ambiguity register.
+- `data/dictionary_v2_exclusions.csv`: construct-design exclusions from candidate generation.
+- `data/whiskyfun_dictionary_v2.json`: authoritative frozen instrument.
+- `data/dictionary_v2_provenance.csv`: frozen approval and frequency audit.
+- `data/v2/` and `figures/v2/`: primary analysis tables, features, and figures.
+- `_local/archive/v1/`: superseded V1 CSVs, figures, and notebooks (local archive).
 
-Run notebooks in order: `w0_preproc_*` → `w1_*` → `w2_analysis` → `w3_analysis` → `w4_analysis`.
+## Analysis Design
 
-Word2Vec models in `models/` are generated by `notebooks/w2_analysis.ipynb` and are not tracked in git (see `.gitignore`).
+The approved primary instrument is `data/whiskyfun_dictionary_v2.json`.
+Descriptive OLS models report HC1 robust standard errors. Predictive model comparisons use the
+same shuffled outer five-fold cross-validation splits, with text vectorization
+and Ridge tuning confined to training folds. Validation groups use title or
+assigned-distillery metadata rather than dictionary feature outcomes.
 
-## Dataset documentation
+Embedding projections are cosine similarities, and category averages exclude
+terms used to construct the corresponding pole. WEAT results report corrected
+permutation p-values and Holm adjustment across the two primary tests.
+Frequency-weighted category projections and ambiguous-term allocations are
+labeled sensitivity analyses. The `Natural_Artificial` result is interpreted
+as a robust boundary within this corpus, not as a universal structure of taste
+or an observed effect on consumers.
 
-### Data sources
+## Notebooks
 
-- **Archive corpus**: Monthly HTML archives on whiskyfun.com were crawled and cleaned; rows live in `pipeline/whiskyfun_archive_2012_2025_clean/` and were joined with the Scottish Malts index.
-- **Scottish Malts index**: Distillery and section pages under the site's Scottish Malts index were scraped (`pipeline/whiskyfun_scottish_malts_index.py`), producing `pipeline/whiskyfun_scottish_malts_index_pages.csv` and match metadata.
-- **Input to the build script**: `pipeline/whiskyfun_scottish_malts_matched_reviews.csv` (full corpus rows plus index-matching diagnostics).
+Active notebooks in `notebooks/`:
 
-### Inclusion: two-tier strategy
+- `w0_preproc_phrases.ipynb`, `w0_preproc_bigrams.ipynb`: preprocessing provenance.
+- `w1_eda.ipynb`: exploratory analysis on the shared corpus and V2 features.
+- `v2_dictionary_review.ipynb`: adjudication worksheet presentation and checks.
+- `w2_analysis.ipynb`, `w3_analysis.ipynb`, `w4_analysis.ipynb`: step-by-step
+  reproduction of regression, embedding, and publication-table results.
 
-**Tier 1 — `match_source=index`**
+Week notebooks remain in `notebooks/` for step-by-step reproduction. Archived
+V1 **data and figures** live under `_local/archive/v1/`; publication tables
+and figures are regenerated by the `analysis/` modules into `data/v2/` and
+`figures/v2/`.
 
-- `is_scottish_malt_indexed_strict == TRUE`
-- `page_type` is `named_scottish_malt_distillery` or `named_scottish_malt_section`
-- **Distillery** = `index_distillery` from Whiskyfun's index (site classification, not legal disclosure).
-
-**Tier 2 — `match_source=name`**
-
-- `is_scottish_malt_indexed == FALSE`
-- `page_type` is **not** an auxiliary index page
-- **Distillery** = longest matching name from the Scottish Malts index list applied to `whisky_name_raw` after alias normalization.
-
-**Shared filters**: numeric score required; `review_date` year in 2012–2025; rows deduplicated by `dedupe_hash`.
-
-### Output schema
-
-| Column | Description |
-|--------|-------------|
-| `dedupe_hash` | SHA-256 of normalized review body |
-| `whisky_name_raw` | Bottle line as in the matched CSV |
-| `distillery` | Assigned distillery (index or name match) |
-| `score` | Integer points |
-| `review_date` / `review_year` | ISO date and year |
-| `source_url` | Archive page URL |
-| `review_text` | Cleaned full text |
-| `identity_status` | `explicit_distillery`, `undisclosed_but_indexed`, or `name_matched` |
-| `match_source` | `index` or `name` |
-| `nose` / `mouth` / `finish` / `comments` | Parsed sections |
-| `nmf` | Sensory-only concatenation (Nose + Mouth + Finish) |
-
-### Build statistics (reference run)
-
-- Output rows: **11,149** | Distinct distilleries: **146**
-- Tier 1 (index): **2,657** | Tier 2 (name): **8,492**
-- Rows with all three sensory sections non-empty: **11,117**
-
-### Limitations
-
-- Tier 2 assigns distillery by label text; undisclosed codes are only included under Tier 1 index matches.
-- Aliases are hand-curated; rare spellings may need new rules.
-- Section parsing misses non-standard formatting; use full `review_text` when sensory sections are empty.
-
-## Local working files
-
-Private drafts, AI prompts, course memos, literature PDFs, and the internal implementation plan live in `_local/` on your machine. That directory is gitignored and will not appear on GitHub.
-
-## License
-
-Academic research project. Review text © original authors on whiskyfun.com; use for research purposes only.
+> **Note for notebook users.** All week notebooks (`w1_eda` through `w4`)
+> now read from and write to **V2 paths** (`data/whiskyfun_dictionary_v2.json`,
+> `data/v2/whiskyfun_dict_features.parquet`, `data/v2/`). Do **not** run
+> `w1_dict_build.ipynb` or `w1_dict_features.ipynb` to reproduce V2 results —
+> those are V1-era notebooks whose outputs are already superseded. The correct
+> starting notebook is `w1_eda.ipynb`, followed by `w2_analysis.ipynb`,
+> `w3_analysis.ipynb`, and `w4_analysis.ipynb` in order.
