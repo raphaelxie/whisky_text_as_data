@@ -1,0 +1,5 @@
+Test,EffectSize_d,p_value_one_sided,N_permutations,n_X,n_Y,n_A,n_B,analysis_role,notes
+WEAT 1: High vs Low × Quality/Defect,1.6885,0.0003,10000,7,7,6,5,primary,"X missing: ['long_finish'], Y missing: ['short_finish']"
+WEAT 2: Flaws vs Neutral × Defect/Quality (with sulphur),0.9965,0.034,10000,7,6,5,5,primary,"Target X: ['rubber', 'sulphur', 'cardboard', 'soap', 'metallic', 'feinty', 'solvent']"
+WEAT 2: Flaws vs Neutral × Defect/Quality (without sulphur),0.9941,0.043,10000,6,6,5,5,sensitivity,"Target X: ['rubber', 'cardboard', 'soap', 'metallic', 'feinty', 'solvent']; Δd from full: +0.0024"
+WEAT 3 (Suppl.): Old_School vs Modern × Quality/Defect,1.625,0.0003,10000,7,7,6,5,supplementary_weat,Tests production-method vocabulary evaluative weight; not pre-registered primary

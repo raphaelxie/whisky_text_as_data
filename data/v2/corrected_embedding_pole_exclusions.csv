@@ -1,0 +1,45 @@
+category,dimension,excluded_pole_terms,n_excluded,n_retained
+fruit,Quality_Defect,,0,25
+fruit,Complexity_Simplicity,,0,25
+fruit,Balance_Imbalance,,0,25
+fruit,Natural_Artificial,,0,25
+floral,Quality_Defect,,0,9
+floral,Complexity_Simplicity,,0,9
+floral,Balance_Imbalance,,0,9
+floral,Natural_Artificial,,0,9
+spice,Quality_Defect,,0,8
+spice,Complexity_Simplicity,,0,8
+spice,Balance_Imbalance,,0,8
+spice,Natural_Artificial,,0,8
+peat,Quality_Defect,,0,38
+peat,Complexity_Simplicity,,0,38
+peat,Balance_Imbalance,,0,38
+peat,Natural_Artificial,,0,38
+sherry,Quality_Defect,,0,46
+sherry,Complexity_Simplicity,,0,46
+sherry,Balance_Imbalance,,0,46
+sherry,Natural_Artificial,,0,46
+oak,Quality_Defect,,0,14
+oak,Complexity_Simplicity,,0,14
+oak,Balance_Imbalance,,0,14
+oak,Natural_Artificial,,0,14
+texture,Quality_Defect,,0,14
+texture,Complexity_Simplicity,,0,14
+texture,Balance_Imbalance,,0,14
+texture,Natural_Artificial,waxy,1,13
+mineral,Quality_Defect,,0,20
+mineral,Complexity_Simplicity,,0,20
+mineral,Balance_Imbalance,,0,20
+mineral,Natural_Artificial,,0,20
+flaw,Quality_Defect,,0,17
+flaw,Complexity_Simplicity,,0,17
+flaw,Balance_Imbalance,,0,17
+flaw,Natural_Artificial,chemical; plastic; rubber; solvent,4,13
+structure,Quality_Defect,,0,28
+structure,Complexity_Simplicity,complex; deep; evolving; intricate; layered; narrow; simple; straightforward,8,20
+structure,Balance_Imbalance,balanced; coherent; elegant; harmonious; integrated; precise; rough; unbalanced,8,20
+structure,Natural_Artificial,,0,28
+eval,Quality_Defect,beautiful; brilliant; disappointing; excellent; great; impressive; marvellous; perfect; poor; superb; weak,11,9
+eval,Complexity_Simplicity,,0,20
+eval,Balance_Imbalance,,0,20
+eval,Natural_Artificial,,0,20

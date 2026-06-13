@@ -55,6 +55,40 @@ class TestStripLeakageAndPrefix(unittest.TestCase):
         self.assertNotIn("SGP", out)
         self.assertNotIn("points", out.lower())
 
+    def test_narrative_numeric_points_removed(self) -> None:
+        out = strip_score_leakage("Comments: easily 90 point material, perhaps 92 points.")
+        self.assertNotRegex(out.lower(), r"\b(?:90|92)\s*points?\b")
+
+    def test_numeric_score_phrasing_removed(self) -> None:
+        out = strip_score_leakage("Comments: Angus gave a score of 94 out of 100.")
+        self.assertNotIn("94", out)
+
+    def test_loose_personal_score_constructions_removed(self) -> None:
+        out = strip_score_leakage(
+            "Comments: this hits a 90. I had it at around 90-91, then 88. "
+            "It fetched north of 92 in my book and was worth 88%."
+        )
+        self.assertNotRegex(out, r"\b(?:90|91|92)\b")
+        self.assertNotIn("88", out)
+
+    def test_percentage_score_after_score_label_removed(self) -> None:
+        out = strip_score_leakage("Comments: many tasters would score this old baby 88 or 89%.")
+        self.assertNotRegex(out, r"\b(?:88|89)\b")
+
+    def test_score_context_does_not_strip_abv_or_age(self) -> None:
+        out = strip_score_leakage(
+            "Nose: hitting 60% ABV is hard at 20 years of age. "
+            "Serge scored an earlier bottle back in 2008."
+        )
+        self.assertIn("60% ABV", out)
+        self.assertIn("20 years", out)
+        self.assertIn("2008", out)
+
+    def test_nonnumeric_score_discussion_retained(self) -> None:
+        out = strip_score_leakage("Comments: the score seems fair and SGP is useful.")
+        self.assertIn("score seems fair", out)
+        self.assertIn("SGP is useful", out)
+
     def test_prefix(self) -> None:
         title = "Caol Ila 12yo (43%, OB)"
         body = f"{title} Colour: gold. Nose: peat."

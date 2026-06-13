@@ -1,0 +1,507 @@
+{
+  "rows": 11149,
+  "distilleries": 146,
+  "score": {
+    "mean": 86.226,
+    "median": 87.0,
+    "sd": 5.357,
+    "min": 4,
+    "max": 100
+  },
+  "match_source": {
+    "name": {
+      "n": 8492,
+      "pct": 76.2
+    },
+    "index": {
+      "n": 2657,
+      "pct": 23.8
+    }
+  },
+  "identity_status": {
+    "name_matched": {
+      "n": 8492,
+      "pct": 76.2
+    },
+    "explicit_distillery": {
+      "n": 2403,
+      "pct": 21.6
+    },
+    "undisclosed_but_indexed": {
+      "n": 254,
+      "pct": 2.3
+    }
+  },
+  "section_nonempty": {
+    "review_text": 11149,
+    "nose": 11133,
+    "mouth": 11130,
+    "finish": 11120,
+    "comments": 11100,
+    "nmf": 11133
+  },
+  "score_markers": [
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "numeric_points",
+      "count": 11180
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "numeric_score_phrase",
+      "count": 2
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "sgp_score_field",
+      "count": 11180
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "wf_score_field",
+      "count": 672
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "score_label_numeric",
+      "count": 62
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "numeric_score_label",
+      "count": 11180
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "personal_score_action",
+      "count": 82
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "personal_percent_score",
+      "count": 47
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "personal_score_sequence",
+      "count": 18
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "numeric_in_tasting_book",
+      "count": 80
+    },
+    {
+      "stage": "source_text_before_cleaning",
+      "scope": "text",
+      "marker": "score_threshold",
+      "count": 29
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "numeric_points",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "numeric_score_phrase",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "sgp_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "wf_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "score_label_numeric",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "numeric_score_label",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "personal_score_action",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "personal_percent_score",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "personal_score_sequence",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "numeric_in_tasting_book",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "review_text",
+      "marker": "score_threshold",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "numeric_points",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "numeric_score_phrase",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "sgp_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "wf_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "score_label_numeric",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "numeric_score_label",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "personal_score_action",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "personal_percent_score",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "personal_score_sequence",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "numeric_in_tasting_book",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nose",
+      "marker": "score_threshold",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "numeric_points",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "numeric_score_phrase",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "sgp_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "wf_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "score_label_numeric",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "numeric_score_label",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "personal_score_action",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "personal_percent_score",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "personal_score_sequence",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "numeric_in_tasting_book",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "mouth",
+      "marker": "score_threshold",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "numeric_points",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "numeric_score_phrase",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "sgp_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "wf_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "score_label_numeric",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "numeric_score_label",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "personal_score_action",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "personal_percent_score",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "personal_score_sequence",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "numeric_in_tasting_book",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "finish",
+      "marker": "score_threshold",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "numeric_points",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "numeric_score_phrase",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "sgp_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "wf_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "score_label_numeric",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "numeric_score_label",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "personal_score_action",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "personal_percent_score",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "personal_score_sequence",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "numeric_in_tasting_book",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "comments",
+      "marker": "score_threshold",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "numeric_points",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "numeric_score_phrase",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "sgp_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "wf_score_field",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "score_label_numeric",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "numeric_score_label",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "personal_score_action",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "personal_percent_score",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "personal_score_sequence",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "numeric_in_tasting_book",
+      "count": 0
+    },
+    {
+      "stage": "analytical_text_after_cleaning",
+      "scope": "nmf",
+      "marker": "score_threshold",
+      "count": 0
+    }
+  ]
+}

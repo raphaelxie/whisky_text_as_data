@@ -1,0 +1,6 @@
+term,proposed_v2_category,review_frequency,decision,reviewer_rationale,reviewer_status
+mint,excluded_by_construct_design,1454,exclude_irrelevant,Herbal/tea is not retained as a primary construct in the simplified Version 2 instrument.,design_decision
+herbal,excluded_by_construct_design,1739,exclude_irrelevant,Herbal/tea is not retained as a primary construct in the simplified Version 2 instrument.,design_decision
+black_tea,excluded_by_construct_design,332,exclude_irrelevant,Herbal/tea is not retained as a primary construct in the simplified Version 2 instrument.,design_decision
+green_tea,excluded_by_construct_design,631,exclude_irrelevant,Herbal/tea is not retained as a primary construct in the simplified Version 2 instrument.,design_decision
+earl_grey,excluded_by_construct_design,212,exclude_irrelevant,Herbal/tea is not retained as a primary construct in the simplified Version 2 instrument.,design_decision
