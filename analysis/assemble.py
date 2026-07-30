@@ -121,7 +121,7 @@ Limitations are substantial. This is one reviewer's corpus, not expert whisky di
 This project makes expert taste computationally observable without reducing it to score prediction. Whiskyfun tasting notes provide a bounded case in which transparent domain measurement and robust semantic analysis identify how specialized vocabulary renders sensory value publicly comparable. The evidence supports a corpus-specific boundary between legitimate character and artificial defect; it does not establish audience effects, market value, or universal structures of taste.
 
 ### Reproducibility
-The canonical computational entry points are `python -m analysis.qa`, `python -m analysis.dictionary candidate`, `python -m analysis.dictionary freeze`, `python -m analysis.models`, `python -m analysis.embeddings`, and `python -m analysis.assemble`. Version 2 primary outputs are generated under `data/v2/` and `figures/v2/` only after approval. The bibliography source of truth is `paper/references.bib`; verification notes are in `paper/source_log.md`.
+The canonical computational entry points are `python -m analysis.qa`, `python -m analysis.dictionary candidate`, `python -m analysis.dictionary freeze`, `python -m analysis.models`, `python -m analysis.embeddings`, and `python -m analysis.assemble`. Version 2 primary outputs are generated under `data/v2/` and `figures/v2/` only after approval. The bibliography source of truth is `paper/tex_paper/references.bib`.
 
 ### References
 Bourdieu, Pierre. 1984. *Distinction: A Social Critique of the Judgement of Taste*. Cambridge, MA: Harvard University Press.

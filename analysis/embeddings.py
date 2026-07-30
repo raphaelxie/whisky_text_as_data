@@ -320,16 +320,59 @@ def ambiguous_projection_sensitivity(
     return pd.DataFrame(rows)
 
 
-def plot_dimensions(means: pd.DataFrame, figure_dir: Path) -> None:
+def projection_confidence_intervals(
+    terms: pd.DataFrame, exclusions: pd.DataFrame, categories: pd.Index
+) -> pd.DataFrame:
+    """95% CI half-widths from eligible (pole-excluded) term projections."""
+    ci_rows = []
+    for category in categories:
+        row = {}
+        for dimension in DIMS:
+            exc = exclusions.loc[
+                exclusions["category"].eq(category) & exclusions["dimension"].eq(dimension),
+                "excluded_pole_terms",
+            ]
+            excluded = {t.strip() for t in str(exc.iloc[0]).split(";") if t.strip()} if len(exc) else set()
+            eligible = terms[terms["category"].eq(category) & ~terms["term"].isin(excluded)]
+            n = len(eligible)
+            std = eligible[f"{dimension}_proj"].std(ddof=1)
+            row[f"{dimension}_proj"] = 1.96 * std / np.sqrt(n) if n > 1 else 0.0
+        ci_rows.append(row)
+    return pd.DataFrame(ci_rows, index=categories)
+
+
+def plot_dimensions(
+    means: pd.DataFrame,
+    figure_dir: Path,
+    terms: pd.DataFrame | None = None,
+    exclusions: pd.DataFrame | None = None,
+) -> None:
     figure_dir.mkdir(parents=True, exist_ok=True)
     display = means.set_index("category")[[f"{name}_proj" for name in DIMS]]
-    display.plot(kind="bar", figsize=(12, 6))
+    yerr = None
+    if terms is not None and exclusions is not None:
+        yerr = projection_confidence_intervals(terms, exclusions, display.index)
+    ax = display.plot(
+        kind="bar",
+        figsize=(12, 6),
+        yerr=yerr,
+        capsize=3,
+        error_kw={"elinewidth": 0.8, "capthick": 0.8},
+    )
+    ax.axhline(0, color="black", linewidth=0.8)
     plt.ylabel("Mean cosine projection (pole terms excluded)")
     plt.title("Corrected category projections onto cultural dimensions")
     plt.tight_layout()
     plt.savefig(figure_dir / "fig_corrected_category_dimensions.png", dpi=180)
     plt.savefig(figure_dir / "fig_corrected_category_dimensions.pdf")
     plt.close()
+
+
+def plot_dimensions_from_tables(output_dir: Path, figure_dir: Path) -> None:
+    means = pd.read_csv(output_dir / "w4_table6_dimension_projections.csv")
+    terms = pd.read_csv(output_dir / "w3_dimension_projections.csv")
+    exclusions = pd.read_csv(output_dir / "corrected_embedding_pole_exclusions.csv", keep_default_na=False)
+    plot_dimensions(means, figure_dir, terms=terms, exclusions=exclusions)
 
 
 def main() -> None:
@@ -341,7 +384,15 @@ def main() -> None:
     parser.add_argument("--provenance", type=Path, default=DATA / "dictionary_v2_provenance.csv")
     parser.add_argument("--ambiguous-register", type=Path, default=DATA / "dictionary_v2_ambiguous_terms.csv")
     parser.add_argument("--skip-stability", action="store_true")
+    parser.add_argument(
+        "--plot-only",
+        action="store_true",
+        help="Regenerate category-dimension figure from saved projection tables.",
+    )
     args = parser.parse_args()
+    if args.plot_only:
+        plot_dimensions_from_tables(args.output_dir, args.figure_dir)
+        return
     dictionary = load_dictionary(args.dictionary)
     ensure_dirs()
     tokenized_path = args.output_dir / "whiskyfun_tokenized.parquet"
@@ -376,7 +427,7 @@ def main() -> None:
             json.dumps(summary, indent=2) + "\n", encoding="utf-8"
         )
         print(json.dumps(summary, indent=2))
-    plot_dimensions(means, args.figure_dir)
+    plot_dimensions(means, args.figure_dir, terms=terms, exclusions=exclusions)
     print(means.to_string(index=False))
     print(weat[["test", "effect_size_d", "p_value_one_sided", "p_value_holm_primary"]].to_string(index=False))
 
