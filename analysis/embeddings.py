@@ -346,6 +346,7 @@ def plot_dimensions(
     figure_dir: Path,
     terms: pd.DataFrame | None = None,
     exclusions: pd.DataFrame | None = None,
+    paper_figure_dir: Path | None = None,
 ) -> None:
     figure_dir.mkdir(parents=True, exist_ok=True)
     display = means.set_index("category")[[f"{name}_proj" for name in DIMS]]
@@ -365,14 +366,70 @@ def plot_dimensions(
     plt.tight_layout()
     plt.savefig(figure_dir / "fig_corrected_category_dimensions.png", dpi=180)
     plt.savefig(figure_dir / "fig_corrected_category_dimensions.pdf")
+    if paper_figure_dir is not None:
+        paper_figure_dir.mkdir(parents=True, exist_ok=True)
+        plt.savefig(paper_figure_dir / "fig4_category_dimensions.png", dpi=180)
+        plt.savefig(paper_figure_dir / "fig4_category_dimensions.pdf")
     plt.close()
 
 
-def plot_dimensions_from_tables(output_dir: Path, figure_dir: Path) -> None:
+WEAT_LABELS = {
+    "High vs low descriptors x quality/defect": "WEAT 1: High vs low descriptors",
+    "Flaws vs neutral descriptors x defect/quality": "WEAT 2: Flaws vs neutral descriptors",
+    "Flaws vs neutral descriptors x defect/quality (including ambiguous sulphur)": "WEAT 2 (sens.): + sulphur",
+    "Old_School vs Modern/Industrial descriptors x Quality/Defect": "WEAT 3 (suppl.): Old-school vs modern",
+}
+WEAT_ROLE_STYLE = {
+    "primary": ("#375a7f", "Primary test (Holm-adjusted p)"),
+    "sensitivity": ("#9aaab8", "Sensitivity check"),
+    "supplementary_weat": ("#c2873a", "Supplementary test"),
+}
+
+
+def plot_weat(weat: pd.DataFrame, figure_dirs: list[Path]) -> None:
+    """Horizontal bars of WEAT effect sizes, annotated with the p-value used in the text."""
+    plot_df = weat.iloc[::-1].reset_index(drop=True)
+    fig, ax = plt.subplots(figsize=(9, 3.8))
+    for idx, row in plot_df.iterrows():
+        color, _ = WEAT_ROLE_STYLE.get(row["analysis_role"], ("#777777", row["analysis_role"]))
+        ax.barh(idx, row["effect_size_d"], color=color)
+        holm = row.get("p_value_holm_primary")
+        if row["analysis_role"] == "primary" and pd.notna(holm):
+            p_label = f"Holm p = {holm:.4f}"
+        else:
+            p_label = f"p = {row['p_value_one_sided']:.4f}"
+        ax.text(
+            row["effect_size_d"] + 0.03, idx,
+            f"d = {row['effect_size_d']:.3f}; {p_label}; {int(row['n_permutations']):,} perms",
+            va="center", fontsize=8,
+        )
+    ax.set_yticks(range(len(plot_df)))
+    ax.set_yticklabels([WEAT_LABELS.get(test, test) for test in plot_df["test"]], fontsize=9)
+    ax.set_xlabel("WEAT effect size (Cohen's d)")
+    ax.set_xlim(0, max(2.0, plot_df["effect_size_d"].max() * 1.9))
+    handles = [
+        plt.Rectangle((0, 0), 1, 1, color=color)
+        for role, (color, _) in WEAT_ROLE_STYLE.items() if role in set(plot_df["analysis_role"])
+    ]
+    labels = [label for role, (_, label) in WEAT_ROLE_STYLE.items() if role in set(plot_df["analysis_role"])]
+    ax.legend(
+        handles, labels, loc="lower center", bbox_to_anchor=(0.5, 1.0),
+        ncol=len(handles), fontsize=8, frameon=False,
+    )
+    fig.tight_layout()
+    for figure_dir in figure_dirs:
+        figure_dir.mkdir(parents=True, exist_ok=True)
+        fig.savefig(figure_dir / "fig5_weat_effect_sizes.pdf")
+        fig.savefig(figure_dir / "fig5_weat_effect_sizes.png", dpi=180)
+    plt.close(fig)
+
+
+def plot_dimensions_from_tables(output_dir: Path, figure_dir: Path, paper_figure_dir: Path) -> None:
     means = pd.read_csv(output_dir / "w4_table6_dimension_projections.csv")
     terms = pd.read_csv(output_dir / "w3_dimension_projections.csv")
     exclusions = pd.read_csv(output_dir / "corrected_embedding_pole_exclusions.csv", keep_default_na=False)
-    plot_dimensions(means, figure_dir, terms=terms, exclusions=exclusions)
+    plot_dimensions(means, figure_dir, terms=terms, exclusions=exclusions, paper_figure_dir=paper_figure_dir)
+    plot_weat(pd.read_csv(output_dir / "w3_weat_results.csv"), [figure_dir, paper_figure_dir])
 
 
 def main() -> None:
@@ -383,15 +440,20 @@ def main() -> None:
     parser.add_argument("--figure-dir", type=Path, default=FIGURES / "v2")
     parser.add_argument("--provenance", type=Path, default=DATA / "dictionary_v2_provenance.csv")
     parser.add_argument("--ambiguous-register", type=Path, default=DATA / "dictionary_v2_ambiguous_terms.csv")
+    parser.add_argument(
+        "--paper-figure-dir",
+        type=Path,
+        default=Path(__file__).resolve().parents[1] / "paper" / "tex_paper" / "figure",
+    )
     parser.add_argument("--skip-stability", action="store_true")
     parser.add_argument(
         "--plot-only",
         action="store_true",
-        help="Regenerate category-dimension figure from saved projection tables.",
+        help="Regenerate category-dimension and WEAT figures from saved tables.",
     )
     args = parser.parse_args()
     if args.plot_only:
-        plot_dimensions_from_tables(args.output_dir, args.figure_dir)
+        plot_dimensions_from_tables(args.output_dir, args.figure_dir, args.paper_figure_dir)
         return
     dictionary = load_dictionary(args.dictionary)
     ensure_dirs()
@@ -427,7 +489,8 @@ def main() -> None:
             json.dumps(summary, indent=2) + "\n", encoding="utf-8"
         )
         print(json.dumps(summary, indent=2))
-    plot_dimensions(means, args.figure_dir, terms=terms, exclusions=exclusions)
+    plot_dimensions(means, args.figure_dir, terms=terms, exclusions=exclusions, paper_figure_dir=args.paper_figure_dir)
+    plot_weat(weat, [args.figure_dir, args.paper_figure_dir])
     print(means.to_string(index=False))
     print(weat[["test", "effect_size_d", "p_value_one_sided", "p_value_holm_primary"]].to_string(index=False))
 

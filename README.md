@@ -12,38 +12,28 @@ they are not authoritative.
 ## Project Status
 
 This began as the final project for CSSS 594 (Computational Social Science).
-**The course is finished.** The repository is now in submission preparation:
-the analysis is frozen, and active work is theoretical development, reframing,
-and copy-editing of the manuscript.
-
-That transition is why the repository is large and layered. It holds two kinds
-of material that are easy to confuse — a finished, reproducible analysis
-pipeline, and an accumulation of course-era drafts, memos, and superseded
-artifacts. [Repository Structure](#repository-structure) marks which is which,
-and [Canonical Versus Superseded](#canonical-versus-superseded) is the quick
-answer for "which version of this file do I trust?"
+**The course is finished**, and the work was presented at Text as Data (TADA)
+2026 on October 6. The repository is now in journal-submission preparation:
+the analysis pipeline is reproducible, and active work is measurement
+refinement, theoretical development, and copy-editing of the manuscript.
 
 ## Publication Plan
 
 Two stages, one framing target.
 
-1. **Text as Data (TADA) — submit by October 1, 2026.** A feedback checkpoint
-   before journal submission. TADA is non-archival, so presenting there does
-   not preclude a later journal submission; verify this against the current
-   call for papers before submitting.
+1. **Text as Data (TADA) 2026 — done.** Lightning talk delivered October 6,
+   2026. TADA is non-archival, so it does not preclude journal submission.
 2. **_Poetics: Journal of Empirical Research on Culture, the Media and the
-   Arts_ — submit after incorporating conference feedback.**
+   Arts_ — next.** Incorporate TADA and reviewer feedback, then submit.
 
 *Poetics* is the terminal target, so **all copy-editing, reframing, and
-theoretical work is anchored to Poetics conventions**, not to conference
-norms. Cultural sociology leads; computational measurement is the enabling
-method, not the headline. The TADA submission uses the same framing rather
-than a separate one.
+theoretical work is anchored to Poetics conventions**. Cultural sociology
+leads; computational measurement is the enabling method, not the headline.
 
 The copy-edit pass is driven by `_feedback/`: written comments from the
 professor and TA, plus two AI reviewer reports covering theory and
 accessibility. `paper/REFRAMING_MEMO_POETICS.md` turns those into a working
-checklist under "August–September 2026."
+checklist.
 
 **Working title:** *Making Expert Taste Computable: Symbolic Boundaries and
 the Discursive Production of Value in Whisky Reviews*
@@ -66,8 +56,7 @@ It makes three contributions:
 
 The full venue strategy, article outline, and revision plan live in
 `paper/REFRAMING_MEMO_POETICS.md`. Its framing guidance is current; its
-timeline and backup cascade are **stale** — they were written for a direct
-August 1, 2026 Poetics submission and predate the TADA checkpoint.
+timeline and backup cascade are **stale** (written before the TADA talk).
 
 ## Where To Start
 
@@ -87,9 +76,9 @@ August 1, 2026 Poetics submission and predate the TADA checkpoint.
 
 1. **Acquisition** — `pipeline/` and `whiskyfun_build_analytical_dataset.py`.
    Crawl, clean, index-match, and assemble the analytical corpus. This has
-   already been run; you do not need to re-scrape to reproduce results. Its
-   bulky inputs (671 cached HTML pages, 167 monthly archive CSVs) are excluded
-   from version control.
+   already been run; you do not need to re-scrape to reproduce results. The
+   raw crawl cache was deleted; the committed matched-reviews CSV is the
+   pipeline's durable output. See `pipeline/README.md`.
 2. **Measurement** — `analysis/dictionary.py` and the `data/dictionary_v2_*`
    files. Generates candidate terms, records human adjudication, and freezes
    the instrument.
@@ -99,60 +88,53 @@ August 1, 2026 Poetics submission and predate the TADA checkpoint.
 4. **Writing** — `paper/` and `_feedback/`. Local only; not published to
    GitHub.
 
-`notebooks/` runs alongside these as provenance and presentation. `_local/` is
-a historical archive of course-era material.
+`notebooks/` runs alongside these as provenance and presentation. `_local/`
+holds a few private, untracked items (TADA deck, course deck, literature
+PDFs); see `_local/README.md`.
 
 ### Directory map
+
+Four directories carry their own `README.md` with the file-level detail that
+used to live only here: `data/v2/README.md`, `pipeline/README.md`,
+`notebooks/README.md`, and `figures/README.md`.
 
 | Path | Contents | Version control |
 | --- | --- | --- |
 | `whiskyfun_build_analytical_dataset.py` | Builds `data/whiskyfun_analytical_dataset.csv` from pipeline match outputs: two-tier inclusion, alias normalization, score-leakage stripping, section parsing | tracked |
 | `analysis/` | The authoritative computation layer: `common.py` (shared paths, tokenization, features), `qa.py`, `dictionary.py`, `models.py`, `embeddings.py`, `assemble.py` | tracked |
 | `data/` | Analytical corpus, tokenized parquet, frozen instrument, adjudication records, QA output | tracked |
-| `data/v2/` | Primary result tables and features (36 tracked files) | tracked |
+| `data/v2/` | Primary result tables and features (36 tracked files); see `data/v2/README.md` for what each file is and which `w4_table*` files alias which `corrected_*`/`w3_*` file | tracked |
 | `figures/v2/` | Primary figures (3 figures, PNG + PDF) | tracked |
-| `figures/` (top level) | Superseded notebook figures: `fig_eda_*` from `w1_eda`, `fig_w2_*`/`fig_w3_*`/`fig_w4_*` from the week notebooks | tracked |
-| `notebooks/` | Preprocessing provenance, dictionary review, and step-by-step presentation of results | tracked |
-| `pipeline/` | Scraper, cleaner, index matcher, parse utilities, and the one pytest suite | tracked; heavy artifacts ignored |
-| `models/` | Trained Word2Vec (`w2v_whisky.model`, `w2v_whisky.kv`), regenerated by `analysis.embeddings` | **ignored** |
+| `figures/` (top level) | Exploratory `fig_eda_*` figures from `notebooks/w1_eda.ipynb`; see `figures/README.md` | tracked |
+| `data/archive/` | The superseded V1 dictionary, read by `analysis.dictionary candidate` to seed V2 candidates | tracked |
+| `notebooks/` | Preprocessing provenance, dictionary review, EDA, and presentation of results; see `notebooks/README.md` | tracked |
+| `pipeline/` | Scraper, cleaner, index matcher, parse utilities, and the one pytest suite; see `pipeline/README.md` for the acquisition pipeline and what was moved out | tracked; heavy artifacts ignored |
 | `paper/` | LaTeX manuscript (`tex_paper/`), Poetics reframing memo, enriched theory framework | **ignored — local only** |
 | `_feedback/` | Professor and TA feedback, plus two AI reviewer reports in `_AI_reviewer/`; drives the copy-edit pass | **ignored — local only** |
-| `_local/` | Course-era archive: literature PDFs, weekly memos, old prompts, superseded drafts, presentation deck and build scripts, V1 data and figures | **ignored — local only** |
+| `_local/` | TADA deck, course deck, literature PDFs; see `_local/README.md` | **ignored — local only** |
 
-`.claude/`, `.cursor/`, `.pytest_cache/`, `__pycache__/`, `.frontend-slides/`,
-and `skills-lock.json` are tooling or cache artifacts with no analytical
-content. All are excluded from version control.
+`.claude/`, `.cursor/`, `.pytest_cache/`, and `__pycache__/` are tooling or
+cache artifacts with no analytical content. All are excluded from version
+control.
 
 ### Canonical versus superseded
 
-The repository keeps its own history, which is the main source of confusion.
-For anything that goes into the manuscript, use the left column.
+Course-era drafts, week notebooks, stranded notebook outputs, and V1 tables
+were removed in the November 2026 cleanup (recoverable from git history before
+that commit). What remains to keep straight:
 
 | Use this | Not this |
 | --- | --- |
-| `data/whiskyfun_dictionary_v2.json` (247 terms, 11 categories) | The V1 dictionary, kept only in `_local/archive/v1/` |
-| `analysis/` modules | `notebooks/w2_analysis.ipynb`, `w3_analysis.ipynb`, `w4_analysis.ipynb` |
-| `data/v2/corrected_*.csv` and `w4_table*.csv` | `data/v2/w2_*.csv` and `w3_weat_term_scores.csv`, which are stranded notebook outputs no current module writes |
-| `figures/v2/` | Top-level `figures/` |
-| `notebooks/w1_eda.ipynb` | `notebooks/w1_dict_build.ipynb`, `w1_dict_features.ipynb` (V1-era) |
-| `paper/tex_paper/main.tex` | `_local/paper_draft/` |
+| `data/whiskyfun_dictionary_v2.json` (247 terms, 11 categories) | `data/archive/whiskyfun_dictionary_v1.json`, kept only to seed candidate generation |
+| `analysis/` modules and `data/v2/`, `figures/v2/` | Notebook outputs, including `fig_eda_*` |
 | `paper/REFRAMING_MEMO_POETICS.md` | `_local/presentation/REFRAMING_MEMO_JCSS.md` |
 
 ### Repository size
 
-`.git` was 449 MB and is now 248 MB after a repack; 258 MB of that was loose,
-unpacked objects. What remains splits two ways:
-
-- **111 MB of real git history**, three quarters of which is tokenized parquet.
-  Parquet is already compressed, so git cannot pack it further. Two of those
-  parquets are no longer tracked — `data/whiskyfun_tokenized_phrases_only.parquet`
-  (a backup nothing reads) and `data/v2/whiskyfun_tokenized.parquet` (regenerated
-  by `analysis.models`) — but their blobs stay in history until it is rewritten.
-- **136 MB in `.git/cursor/`**, which is Cursor's local checkpoint store, not
-  git history. It is never pushed and can be deleted at the cost of losing
-  Cursor's restore points.
-
-Genuinely large files that stay tracked because replication needs them:
+Most of `.git` is tokenized parquet history (parquet is already compressed)
+plus `.git/cursor/` (~136 MB), Cursor's local checkpoint store, which is never
+pushed and can be deleted at the cost of Cursor's restore points. Large files
+that stay tracked because replication needs them:
 `data/whiskyfun_analytical_dataset.csv` (31 MB, the corpus),
 `pipeline/whiskyfun_scottish_malts_matched_reviews.csv` (29 MB, the build
 input), and `data/whiskyfun_tokenized.parquet` (24 MB, the input to
@@ -234,15 +216,16 @@ worksheet has been frozen to `data/whiskyfun_dictionary_v2.json`. Once frozen,
 they write primary artifacts under `data/v2/` and `figures/v2/`. The embedding
 command performs the prespecified deterministic 30-run stability analysis. For
 a quick development-only run, use `python -m analysis.embeddings
---skip-stability`; to redraw the category-dimension figure from saved tables
-without retraining, use `--plot-only`.
+--skip-stability`. To redraw figures from saved tables without refitting or
+retraining, use `python -m analysis.models --plot-only` (figure 3) and
+`python -m analysis.embeddings --plot-only` (figures 4 and 5).
 
-Two commands write outside version control, into `paper/`. `analysis.models`
-exports `fig1_model_comparison` and `fig2_r2_by_scope` directly into
-`paper/tex_paper/figure/`; the manuscript's `fig3`, `fig4`, and `fig5` are
-**not** auto-regenerated and must be refreshed by hand from `figures/v2/`.
-`analysis.assemble` writes `paper/final_paper.md`, a generated markdown summary
-that is separate from the LaTeX manuscript.
+Three commands write outside version control, into `paper/`.
+`analysis.models` exports `fig1_model_comparison`, `fig2_r2_by_scope`, and
+`fig3_known_groups`, and `analysis.embeddings` exports
+`fig4_category_dimensions` and `fig5_weat_effect_sizes`, all into
+`paper/tex_paper/figure/`. `analysis.assemble` writes `paper/final_paper.md`,
+a generated markdown summary that is separate from the LaTeX manuscript.
 
 ## Outputs
 
@@ -274,27 +257,7 @@ or an observed effect on consumers.
 
 ## Notebooks
 
-Active notebooks in `notebooks/`:
-
-- `w0_preproc_phrases.ipynb`, `w0_preproc_bigrams.ipynb`: preprocessing
-  provenance; they build `data/whiskyfun_phrases.json`,
-  `data/whiskyfun_bigrams.json`, and the tokenized parquet.
-- `w1_eda.ipynb`: exploratory analysis on the shared corpus and V2 features.
-- `v2_dictionary_review.ipynb`: adjudication worksheet presentation and checks.
-- `corrected_results.ipynb`: presentation of the current `analysis/` outputs.
-
-Retained for reproduction history, superseded for publication:
-
-- `w2_analysis.ipynb`, `w3_analysis.ipynb`, `w4_analysis.ipynb`: step-by-step
-  regression, embedding, and publication-table results, now recomputed by the
-  `analysis/` modules.
-- `w1_dict_build.ipynb`, `w1_dict_features.ipynb`: V1-era dictionary
-  construction.
-
-> **Note for notebook users.** The week notebooks `w1_eda` through `w4` read
-> from and write to **V2 paths** (`data/whiskyfun_dictionary_v2.json`,
-> `data/v2/whiskyfun_dict_features.parquet`, `data/v2/`), and run in that
-> order. Do **not** run `w1_dict_build.ipynb` or `w1_dict_features.ipynb`
-> alongside them: they build the superseded V1 feature matrix at the old
-> `data/whiskyfun_dict_features.parquet` path, and they expect a V1 dictionary
-> that now exists only under `_local/archive/v1/`.
+See `notebooks/README.md`. The remaining notebooks read V2 paths
+(`data/whiskyfun_dictionary_v2.json`, `data/v2/`). They document preprocessing,
+dictionary review, EDA, and result presentation; none of them is part of the
+reproduction path.

@@ -13,7 +13,7 @@ import pandas as pd
 
 from .common import DATA, ROOT, canonical_dictionary_term
 
-V1_DICTIONARY = ROOT / "_local" / "archive" / "v1" / "data" / "whiskyfun_dictionary_v1.json"
+V1_DICTIONARY = ROOT / "data" / "archive" / "whiskyfun_dictionary_v1.json"
 
 MIN_REVIEW_FREQUENCY = 10
 DECISIONS = {

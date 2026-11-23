@@ -360,6 +360,42 @@ def export_paper_figures(
     plt.close()
 
 
+KNOWN_GROUP_TARGETS = {
+    "Islay assigned distillery": ("peat", "Islay distillery"),
+    "Sherry title cue": ("sherry", "Sherry-title cue"),
+    "Bourbon title cue": ("oak", "Bourbon-title cue (specificity)"),
+}
+
+
+def plot_known_groups(validation: pd.DataFrame, figure_dirs: list[Path]) -> None:
+    """Cohen's d by category for each metadata-defined group; target category highlighted."""
+    groups = [group for group in KNOWN_GROUP_TARGETS if group in set(validation["group"])]
+    fig, axes = plt.subplots(1, len(groups), figsize=(4.2 * len(groups), 4.2), sharey=True)
+    axes = np.atleast_1d(axes)
+    for ax, group in zip(axes, groups):
+        target, title = KNOWN_GROUP_TARGETS[group]
+        rows = validation[validation["group"].eq(group)]
+        colors = ["#b5473a" if category == target else "#9aaab8" for category in rows["category"]]
+        ax.bar(rows["category"], rows["cohen_d"], color=colors)
+        ax.axhline(0, color="black", linewidth=0.8)
+        n_group = int(rows["n_group"].iloc[0])
+        ax.set_title(f"{title}\n(n = {n_group:,})", fontsize=10)
+        ax.tick_params(axis="x", rotation=60, labelsize=8)
+        target_d = rows.loc[rows["category"].eq(target), "cohen_d"].iloc[0]
+        target_idx = list(rows["category"]).index(target)
+        offset = 0.05 if target_d >= 0 else -0.12
+        ax.text(target_idx, target_d + offset, f"d = {target_d:.2f}", ha="center", fontsize=8)
+    axes[0].set_ylabel("Cohen's d (group vs. other reviews)")
+    plotted = validation[validation["group"].isin(groups)]["cohen_d"]
+    axes[0].set_ylim(min(0, plotted.min()) - 0.15, plotted.max() + 0.25)
+    fig.tight_layout()
+    for figure_dir in figure_dirs:
+        figure_dir.mkdir(parents=True, exist_ok=True)
+        fig.savefig(figure_dir / "fig3_known_groups.pdf")
+        fig.savefig(figure_dir / "fig3_known_groups.png", dpi=180)
+    plt.close(fig)
+
+
 def ambiguous_model_sensitivity(
     tokenized: pd.DataFrame, dictionary: dict, df: pd.DataFrame, categories: list[str], ambiguous_path: Path
 ) -> pd.DataFrame:
@@ -450,7 +486,16 @@ def main() -> None:
         default=Path(__file__).resolve().parents[1] / "paper" / "tex_paper" / "figure",
     )
     parser.add_argument("--ambiguous-register", type=Path, default=DATA / "dictionary_v2_ambiguous_terms.csv")
+    parser.add_argument(
+        "--plot-only",
+        action="store_true",
+        help="Redraw the known-groups figure from saved tables without refitting models.",
+    )
     args = parser.parse_args()
+    if args.plot_only:
+        validation = pd.read_csv(args.output_dir / "corrected_independent_group_validation.csv")
+        plot_known_groups(validation, [args.figure_dir, args.paper_figure_dir])
+        return
     dictionary = load_dictionary(args.dictionary)
     ensure_dirs()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -502,6 +547,7 @@ def main() -> None:
     plot_cv(predictions, args.figure_dir)
     plot_scope_r2(primary_scopes, args.figure_dir)
     export_paper_figures(predictions, primary_scopes, args.paper_figure_dir)
+    plot_known_groups(validation, [args.figure_dir, args.paper_figure_dir])
     print(predictions.to_string(index=False))
     print(f"Wrote corrected model outputs to {args.output_dir}")
     print(f"Exported paper figures to {args.paper_figure_dir}")

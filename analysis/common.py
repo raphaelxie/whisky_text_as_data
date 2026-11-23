@@ -89,7 +89,7 @@ def load_dictionary(path: Path | None = None) -> dict:
             f"Primary Version 2 dictionary has not been frozen: {selected}. "
             "Complete data/dictionary_v2_adjudication.csv and run "
             "`python -m analysis.dictionary freeze` first. For historical V1 "
-            "reproduction, explicitly pass _local/archive/v1/data/whiskyfun_dictionary_v1.json."
+            "reproduction, explicitly pass data/archive/whiskyfun_dictionary_v1.json."
         )
     with selected.open(encoding="utf-8") as f:
         return json.load(f)

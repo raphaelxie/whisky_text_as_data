@@ -1,0 +1,6 @@
+# Historical material inside _local/ that should not be treated as current
+# project context. See _local/README.md. This is an indexing convenience,
+# not a security boundary.
+
+_local/Article/
+_local/presentation/
